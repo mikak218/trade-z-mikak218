@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moje Pokémony</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--text:#1c2233;--muted:#667;--accent:#e63946}
+@media(prefers-color-scheme:dark){:root{--bg:#141824;--card:#1f2536;--text:#eef1f8;--muted:#9aa3b8}}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{text-align:center;padding:28px 16px 8px}
+h1{margin:0;font-size:2rem}
+header p{color:var(--muted);margin:6px 0 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px;padding:20px;max-width:1100px;margin:auto}
+.card{background:var(--card);border-radius:16px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.12);position:relative}
+.card img{width:130px;height:130px;object-fit:contain}
+.card h2{font-size:1.05rem;margin:8px 0 2px}
+.dex{color:var(--muted);font-size:.8rem}
+.count{display:inline-block;margin-top:8px;background:var(--accent);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700}
+.note{font-size:.75rem;color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Moje Pokémony</h1>
+  <p id="total"></p>
+</header>
+<main class="grid" id="grid"></main>
+<script>
+// [nazwa, numer w Pokédeksie, liczba, uwaga]
+const data=[
+["Bulbasaur",1,1],["Charmander",4,7],["Charmeleon",5,1],["Squirtle",7,8],
+["Flareon",136,1,"forma Dynamax"],["Dratini",147,3],["Togetic",176,4],["Swinub",220,1],
+["Torchic",255,4],["Combusken",256,1],["Mudkip",258,3],["Swampert",260,1],
+["Beldum",374,1],["Metang",375,2],["Metagross",376,1],["Gible",443,1],
+["Gabite",444,2],["Lucario",448,1],["Snover",459,14],["Litwick",607,7],
+["Lampent",608,2],["Froakie",656,7],["Inkay",686,1],["Malamar",687,1],
+["Rowlet",722,2],["Dartrix",723,1]
+];
+const base="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+let sum=0;const g=document.getElementById("grid");
+data.forEach(([n,id,c,note])=>{
+  sum+=c;
+  const d=document.createElement("div");d.className="card";
+  d.innerHTML=`<img loading="lazy" alt="${n}" src="${base}other/official-artwork/${id}.png" onerror="this.onerror=null;this.src='${base}${id}.png'">
+  <h2>${n}</h2><div class="dex">#${String(id).padStart(3,"0")}</div>
+  <div class="count">× ${c}</div>${note?`<div class="note">${note}</div>`:""}`;
+  g.appendChild(d);
+});
+document.getElementById("total").textContent=`${data.length} gatunków · razem ${sum} sztuk`;
+</script>
+</body>
+</html>
